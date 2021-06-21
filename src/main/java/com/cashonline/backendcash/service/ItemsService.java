@@ -8,9 +8,10 @@ package com.cashonline.backendcash.service;
 import com.cashonline.backendcash.model.Items;
 import com.cashonline.backendcash.repository.ItemsRepository;
 import java.util.List;
-import java.util.Optional;
 import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,13 +19,13 @@ import org.springframework.stereotype.Service;
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 @Service
-public class ItemsService {
+public class ItemsService{
 
     @Autowired
     ItemsRepository itemsRespository;
 
-    public List<Items> findAllItems() {
-        return (List<Items>) itemsRespository.findAll();
+    public Page<Items> findAllItems(Pageable pageable) {         
+        return itemsRespository.findAll(pageable);
     }
 
     public List<Items> findByIdUserId(Integer id) {

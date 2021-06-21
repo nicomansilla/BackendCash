@@ -9,15 +9,16 @@ package com.cashonline.backendcash.controller;
 import com.cashonline.backendcash.model.Items;
 import com.cashonline.backendcash.service.ItemsService;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -29,11 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ItemsController {
     
     @Autowired
-    ItemsService itemsService;   
-
-    @GetMapping()
-    public List<Items> findAllUsers() {
-        return itemsService.findAllItems();
+    ItemsService itemsService;           
+    
+    @GetMapping("/{page}/{size}")
+    public Page<Items> findAllUsers( @PathVariable int page, @PathVariable int size) { 
+        Pageable pageable = PageRequest.of(page, size);
+        return itemsService.findAllItems(pageable);
     }
 
     @GetMapping("/{userId}")
